@@ -8,10 +8,10 @@ import {payget} from "../actions/index"
 
 
 class AddProduct extends Component {
-
     constructor(props) {
+        
         super(props);
-        this.state = { title: "", price: "", description: "", city: "", category: "", image: "", loading: false, alertShow: false, errors: [] };
+        this.state = { title: "", price: "", description: "", prodMonth:0, category: "", image: "", loading: false, alertShow: false, errors: [] };
         this.onChangeHandler = this.onChangeHandler.bind(this);
         this.onSubmitHandler = this.onSubmitHandler.bind(this);
         
@@ -29,8 +29,8 @@ class AddProduct extends Component {
     onSubmitHandler(e) {
   
         e.preventDefault();
-        let { title, price, description, city, category, image } = this.state;
-        let obj = { title, price, description, city, category }
+        let { title, price, description, prodMonth, category, image } = this.state;
+        let obj = { title, price, description, prodMonth, category }
         this.setState({ loading: true })
         this.getBase64(image)
             .then((data) => {
@@ -79,9 +79,9 @@ class AddProduct extends Component {
                                 <Form.Control type="text" placeholder="Enter title" name="title" required onChange={this.onChangeHandler} />
                             </Form.Group>
 
-                            <Form.Group as={Col} controlId="formGridPrice">
-                                <Form.Label>Price</Form.Label>
-                                <Form.Control type="number" step="0.01" placeholder="Price" name="price" required onChange={this.onChangeHandler} />
+                            <Form.Group as={Col} controlId="formGridprice">
+                                <Form.Label>Price Per kg </Form.Label>
+                                <Form.Control type="number" step="0.01" placeholder="price" name="price" required onChange={this.onChangeHandler} />
                             </Form.Group>
                         </Form.Row>
 
@@ -91,19 +91,23 @@ class AddProduct extends Component {
                         </Form.Group>
 
                         <Form.Row>
-                            <Form.Group as={Col} controlId="formGridCity">
-                                <Form.Label>City</Form.Label>
-                                <Form.Control name="city" placeholder="Sofia" required onChange={this.onChangeHandler} />
+                            <Form.Group as={Col} controlId="formGridprodMonth">
+                                <Form.Label>prodMonth</Form.Label>
+                                <Form.Control name="prodMonth" placeholder="1 kg" type='number' required onChange={this.onChangeHandler} />
                             </Form.Group>
 
                             <Form.Group as={Col} controlId="formGridCategory">
-                                <Form.Label>Category</Form.Label>
+                                <Form.Label>ListOfProducts</Form.Label>
                                 <Form.Control as="select" defaultValue="Choose..." name="category" required onChange={this.onChangeHandler}>
                                     <option>Choose...</option>
-                                    <option>Non Aquantic</option>
-                                    <option>Aquantic</option>
-                                    <option>home</option>
-                                    <option>garden</option>
+                                    <option>All Spice </option>
+                                    <option>Anise</option>
+                                    <option>Cardamon</option>
+                                    <option>cianamon</option>
+                                    <option>Cloves</option>
+                                    <option>Coriander</option>
+
+
                                 </Form.Control>
                             </Form.Group>
 
@@ -112,7 +116,7 @@ class AddProduct extends Component {
                                 <Form.Control name="image" type="file" required onChange={this.onChangeHandler} />
                             </Form.Group>
                         </Form.Row>
-                        <div>Charge=Rs 20</div>
+                        <div>Charges Rs {parseInt(parseInt(this.state.price)*0.05)} </div>
                         {this.state.loading ?
                             <Button className="col-lg-12" variant="dark" disabled >
                                 Please wait... <Spinner animation="border" />

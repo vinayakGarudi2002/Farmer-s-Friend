@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
         if (search !== '' && search !== undefined) {
             products = await Product.find();
             products = products.filter(x => x.active == true)
-            products = products.filter(x => x.title.toLowerCase().includes(search.toLowerCase()) || x.city.toLowerCase().includes(search.toLowerCase()))
+            products = products.filter(x => x.title.toLowerCase().includes(search.toLowerCase()) )
             res.status(200).json({ products: products, pages: products.pages });
         } else {
             products = await Product.paginate({}, { page: parseInt(page) || 1, limit: 5 });
@@ -65,13 +65,13 @@ router.get('/specific/:id', async (req, res) => {
 });
 
 router.post('/create', async (req, res) => {
-    let { title, price, description, city, category, image } = req.body;
+    let { title, price, description, prodMonth, category, image } = req.body;
     try {
         let errors = [];
         if (title.length < 3 || title.length > 50) errors.push('Title should be at least 3 characters long and max 50 characters long; ');
         if (isNaN(Number(price))) errors.push('Price should be a number; ');
         if (description.length < 10 || description.length > 1000) errors.push('Description should be at least 10 characters long and max 1000 characters long; ');
-        if (/^[A-Za-z]+$/.test(city) == false) errors.push('City should contains only english letters; ')
+        if (isNaN(Number(prodMonth))) errors.push('prodMonth should be a number; ');
         if (!image.includes('image')) errors.push('The uploaded file should be an image; ');
         if (!category) errors.push('Category is required; ');
 
@@ -79,7 +79,7 @@ router.post('/create', async (req, res) => {
 
         let compressedImg = await productService.uploadImage(image);
         let product = new Product({
-            title, price, description, city, category,
+            title, price, description, prodMonth, category,
             image: compressedImg,
             addedAt: new Date(),
             seller: req.user._id
@@ -97,7 +97,7 @@ router.post('/create', async (req, res) => {
 
 router.patch('/edit/:id', isAuth, async (req, res) => {
     //TODO: Rewrite this 
-    let { title, price, description, city, category, image } = req.body;
+    let { title, price, description, prodMonth, category, image } = req.body;
     try {
         let user = await productService.findUserById(req.user._id);
         let product = await productService.findById(req.params.id);
@@ -109,7 +109,7 @@ router.patch('/edit/:id', isAuth, async (req, res) => {
         if (title.length < 3 || title.length > 50) errors.push('Title should be at least 3 characters long and max 50 characters long; ');
         if (isNaN(Number(price))) errors.push('Price should be a number; ');
         if (description.length < 10 || description.length > 1000) errors.push('Description should be at least 10 characters long and max 1000 characters long; ');
-        if (/^[A-Za-z]+$/.test(city) == false) errors.push('City should contains only english letters; ')
+        if (isNaN(Number(prodMonth))) errors.push('prodMonth should be a number; ');
         if (req.body.image) {
             if (!req.body.image.includes('image')) errors.push('The uploaded file should be an image; ');
         }
@@ -119,9 +119,9 @@ router.patch('/edit/:id', isAuth, async (req, res) => {
 
         if (req.body.image) {
             let compressedImg = await productService.uploadImage(req.body.image);
-            await productService.edit(req.params.id, { title, price, description, city, category, image: compressedImg });
+            await productService.edit(req.params.id, { title, price, description, prodMonth, category, image: compressedImg });
         } else {
-            await productService.edit(req.params.id, { title, price, description, city, category });
+            await productService.edit(req.params.id, { title, price, description, prodMonth, category });
         }
         res.status(201).json({ message: 'Updated!' });
     } catch (err) {

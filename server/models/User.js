@@ -37,10 +37,10 @@ const userSchema = new mongoose.Schema({
         required: ['Phone number is required'],
         match: [/^\d{10}$/, 'Please fill a valid phone number']
     },
-    gender: {
+    typeSubscriber: {
         type: String,
         trim: true,
-        default: 'Not specified'
+        required: ['Type is required'],
     },
     avatar: {
         type: String,

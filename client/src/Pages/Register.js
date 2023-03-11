@@ -12,7 +12,7 @@ function Register({ history }) {
     const [userData, setUserData] = useState({
         name: null,
         lastName: null,
-        gender: null,
+        typeSubscriber: null,
         phoneNumber: '',
         email: "",
         password: "",
@@ -24,7 +24,8 @@ function Register({ history }) {
         e.preventDefault();
         setUserData({ ...userData, [e.target.name]: e.target.value });
     }
-
+     
+      
     const handleSubmitReg = (e) => {
         e.preventDefault();
         setLoading(true);
@@ -66,19 +67,18 @@ function Register({ history }) {
                             <Form.Label>Last Name</Form.Label>
                             <Form.Control type="text" name="lastName" placeholder="Ivanov" onChange={handleChanges} />
                         </Form.Group> */}
-                        <Form.Group as={Col} controlId="formGridGender" className="col-lg-4">
-                            <Form.Label>Gender</Form.Label>
-                            <Form.Control as="select" defaultValue="not specified" name="gender" onChange={handleChanges}>
-                                <option>male</option>
-                                <option>female</option>
-                                <option>not specified</option>
-                            </Form.Control>
+                        <Form.Group as={Col} controlId="formGridtypeSubscriber" className="col-lg-4">
+                            <Form.Label>TypeofSubcriber</Form.Label>
+                            <Form.Control as="select" defaultValue="not specified" name="typeSubscriber" onChange={handleChanges}>
+                                <option>Customer</option>
+                                <option>Farmer</option>
+                                </Form.Control>
                         </Form.Group>
                     </Form.Row>
                     <Form.Row>
                         <Form.Group className="col-lg-12">
                             <Form.Label>Phone Number *</Form.Label>
-                            <Form.Control type="text" name="phoneNumber" placeholder="" onChange={handleChanges} required />
+                            <Form.Control type="text" name="phoneNumber" placeholder="PhoneNumber" onChange={handleChanges} required />
                             <Form.Text muted>
                                 Phone Number should be a valid  number.
                             </Form.Text>
@@ -108,14 +108,18 @@ function Register({ history }) {
                             <Form.Label>Reepeat Password *</Form.Label>
                             <Form.Control type="password" name="repeatPassword" placeholder="Repeat password" onChange={handleChanges} required />
                         </Form.Group>
+
+  
                     </Form.Row>
+                    
                     {loading ?
                         <Button className="col-lg-12 btnAuth" variant="dark" disabled >
                             Please wait... <Spinner animation="border" />
                         </Button>
                         :
-                        <Button variant="dark" className="col-lg-12 btnAuth" type="submit">Sign Up</Button>
+                        <Button variant="dark" className="col-lg-12 btnAuth" type="submit" >Sign Up</Button>
                     }
+
 
                     <p className="bottom-msg-paragraph">Already have an account? <Link to="/auth/login">Sign In</Link>!</p>
                 </Form>

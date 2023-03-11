@@ -45,9 +45,9 @@ const productSchema = new mongoose.Schema({
         type: String,
         default: 'Not specified'
     },
-    city: {
-        type: String,
-        required: ['City is required'],
+    prodMonth: {
+        type: Number,
+        required: true,
         trim: true
     },
     image: {
